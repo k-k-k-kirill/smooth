@@ -1,0 +1,28 @@
+{
+  "name": "smooth",
+  "version": "1.0.0",
+  "description": "Backend for simple project management system",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/k-k-k-kirill/smooth.git"
+  },
+  "keywords": [
+    "project",
+    "management",
+    "tasks"
+  ],
+  "author": "Kirill Vitchenko",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/k-k-k-kirill/smooth/issues"
+  },
+  "homepage": "https://github.com/k-k-k-kirill/smooth#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.2"
+  }
+}
