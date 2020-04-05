@@ -1,12 +1,15 @@
-import { Model } from 'objection';
-const Password = require('objection-password')();
+import { Model } from 'objection'
+const Password = require('objection-password')()
+
 export default class User extends Password(Model) {
     static get tableName() {
-        return 'user';
+        return 'user'
     }
+
     static get idColumn() {
         return 'id';
     }
+
     static get jsonSchema() {
         return {
             type: 'object',
@@ -15,9 +18,10 @@ export default class User extends Password(Model) {
                 id: { type: 'integer' },
                 first_name: { type: 'string', minLength: 1, maxLength: 255 },
                 last_name: { type: 'string', minLength: 1, maxLength: 255 },
-                username: { type: 'string', minLength: 1, maxLength: 255 },
-                password: { type: 'string', minLength: 1, maxLength: 255 },
+                username: { type: 'string',  minLength: 1, maxLength: 255  },
+                password: { type: 'string',  minLength: 1, maxLength: 255  },
             }
-        };
+        }
     }
+    
 }

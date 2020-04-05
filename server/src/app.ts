@@ -1,6 +1,11 @@
 //Express imports
-import { Application, Request, Response, NextFunction } from 'express'
+import { Application } from 'express'
+import { Model } from 'objection'
 const express = require('express')
+const knex = require('./database/database')
+
+//Initialise Objection
+Model.knex(knex)
 
 //Dotenv configuration
 require('dotenv').config()
