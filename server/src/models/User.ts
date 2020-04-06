@@ -23,5 +23,28 @@ export default class User extends Password(Model) {
             }
         }
     }
-    
+
+    static get relationMappings() {
+        const ProjectTemplate = require('./ProjectTemplate');
+        const Project = require('./Project')
+
+        return {
+            project_templates: {
+                relation: Model.HasManyRelation,
+                modelClass: ProjectTemplate,
+                join: {
+                  from: 'user.id',
+                  to: 'project_template.user_id'
+                }
+            },
+            projects: {
+                relation: Model.HasManyRelation,
+                modelClass: Project,
+                join: {
+                  from: 'user.id',
+                  to: 'project.user_id'
+                }
+            }
+        }
+    }
 }
