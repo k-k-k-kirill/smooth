@@ -1,6 +1,8 @@
-import { Model } from 'objection';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const objection_1 = require("objection");
 const Password = require('objection-password')();
-export default class User extends Password(Model) {
+class User extends Password(objection_1.Model) {
     static get tableName() {
         return 'user';
     }
@@ -20,4 +22,27 @@ export default class User extends Password(Model) {
             }
         };
     }
+    static get relationMappings() {
+        const ProjectTemplate = require('./ProjectTemplate');
+        const Project = require('./Project');
+        return {
+            project_templates: {
+                relation: objection_1.Model.HasManyRelation,
+                modelClass: ProjectTemplate,
+                join: {
+                    from: 'user.id',
+                    to: 'project_template.user_id'
+                }
+            },
+            projects: {
+                relation: objection_1.Model.HasManyRelation,
+                modelClass: Project,
+                join: {
+                    from: 'user.id',
+                    to: 'project.user_id'
+                }
+            }
+        };
+    }
 }
+exports.default = User;

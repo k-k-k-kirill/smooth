@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="132" height="37" viewBox="0 0 132 37">
+  <g id="Group_9" data-name="Group 9" transform="translate(-140 -27)">
+    <text id="SMOOTH" transform="translate(140 56)" fill="#fff" font-size="32" font-family="Karla-Bold, Karla" font-weight="700"><tspan x="0" y="0">SMOOTH</tspan></text>
+    <g id="Group_3" data-name="Group 3">
+      <g id="Ellipse_6" data-name="Ellipse 6" transform="translate(186 33)" fill="#d395e8" stroke="#d395e8" stroke-width="1">
+        <circle cx="12" cy="12" r="12" stroke="none"/>
+        <circle cx="12" cy="12" r="11.5" fill="none"/>
+      </g>
+    </g>
+    <g id="Group_4" data-name="Group 4" transform="translate(24)">
+      <g id="Ellipse_6-2" data-name="Ellipse 6" transform="translate(186 33)" fill="#6c63ff" stroke="#6c63ff" stroke-width="1">
+        <circle cx="12" cy="12" r="12" stroke="none"/>
+        <circle cx="12" cy="12" r="11.5" fill="none"/>
+      </g>
+    </g>
+  </g>
+</svg>

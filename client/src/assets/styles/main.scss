@@ -1,0 +1,15 @@
+//Fonts
+@import './common/fonts.scss';
+
+//Typography
+@import './common/typography..scss';
+
+//Variables
+@import './common/variables.scss';
+
+// Global components
+@import './common/index.scss';
+@import './common/App.scss';
+
+//Components
+@import '../../components/Header/Header.scss';
