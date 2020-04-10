@@ -7,9 +7,8 @@
 //Variables
 @import './common/variables.scss';
 
-// Global components
-@import './common/index.scss';
-@import './common/App.scss';
+// Global styles
+@import './common/global.scss';
 
 //Components
 @import '../../components/Header/Header.scss';
