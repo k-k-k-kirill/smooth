@@ -1,14 +1,17 @@
 //Fonts
-@import './common/fonts.scss';
-
-//Typography
-@import './common/typography..scss';
+@import './common/fonts';
 
 //Variables
-@import './common/variables.scss';
+@import './common/variables';
 
 // Global styles
-@import './common/global.scss';
+@import './common/global';
 
 //Components
-@import '../../components/Header/Header.scss';
+@import '../../components/Header/Header';
+
+//Mixins
+@import './mixins/fluid-type';
+
+//Typography
+@import './common/typography';

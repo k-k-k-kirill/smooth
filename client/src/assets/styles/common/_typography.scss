@@ -1,0 +1,10 @@
+body {
+    font-family: $font-family-base;
+}
+
+h1,
+.h1 {
+    @include fluid-type(1.5rem, 3rem, 1rem, 2rem);
+    font-weight: bold;
+    color: $white;
+}
