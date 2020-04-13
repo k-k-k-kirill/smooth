@@ -1,12 +1,17 @@
 import React from 'react';
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
-//Component imports
-import Header from './components/Header/Header'
+//Views
+import Home from './views/Home/Home'
 
 function App() {
   return (
     <div className="App">
-        <Header logo_url={'./assets/images/smooth_logo.svg'} />
+        <BrowserRouter>
+          <Switch>
+            <Route to="/" component={Home} />
+          </Switch>
+        </BrowserRouter>
     </div>
   );
 }
