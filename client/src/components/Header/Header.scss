@@ -6,4 +6,9 @@
     max-width: 100%;
     padding: 1rem 2rem;
     background-color: $dark-blue;
+
+    svg {
+        height: 40px;
+        width: auto;
+    }
 }

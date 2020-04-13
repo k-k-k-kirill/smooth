@@ -4,7 +4,23 @@ body {
 
 h1,
 .h1 {
-    @include fluid-type(1.5rem, 3rem, 1rem, 2rem);
+    @include fluid-type(1.5rem, 4rem, 1rem, 2rem);
     font-weight: bold;
-    color: $white;
 }
+
+h2,
+.h2 {
+    @include fluid-type(1.25rem, 3rem, 1rem, 1.5rem);
+    font-weight: bold;
+}
+
+h3,
+.h3 {
+    @include fluid-type(1.125rem, 2rem, 0.75rem, 1.25rem);
+    font-weight: bold;
+}
+
+p {
+    @include fluid-type(0.75rem, 1.125rem);
+}
+

@@ -7,14 +7,17 @@ interface Props {
 
 const Header: React.FC<Props>  = (props: Props) => {
     return (
-        <header className="app-header">
+        <>
+            <header className="app-header">
+                <div>
+                    <Logo />
+                </div>
+                <div>
+                </div>
+            </header>
             <div>
-                <Logo />
             </div>
-            <div>
-                <h1>Testing fonts</h1>
-            </div>
-        </header>
+        </>
     )
 }
 
