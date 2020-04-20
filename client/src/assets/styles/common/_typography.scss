@@ -22,5 +22,7 @@ h3,
 
 p {
     @include fluid-type(0.75rem, 1.125rem);
+    color: $light;
+    font-weight: light;
 }
 

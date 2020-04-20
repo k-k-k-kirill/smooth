@@ -1,0 +1,15 @@
+.split-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    padding: 5rem 0;
+    width: 80%;
+    margin: auto;
+    grid-gap: 2rem;
+
+    div {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+    }
+}

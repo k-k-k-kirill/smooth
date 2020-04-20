@@ -1,15 +1,23 @@
 .button {
-    padding: 1rem 2rem;
+    padding: 0.75rem 1.25rem;
     color: $white;
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
     background-color: $dark;
     border: 0 solid transparent;
     border-radius: 28px;
-    font-size: 1.25rem;
-    font-weight: bold;
+    font-weight: 700;
+    text-transform: uppercase;
     margin-top: 2rem;
     transition: all 0.15s ease-in-out;
     letter-spacing: 2px;
+
+    
+
+    @media (min-width: 768px) {
+        padding: 1rem 2rem;
+    }
+
+    @include fluid-type( 0.85rem, 1.25rem );
 
     &:hover {
         cursor: pointer;
