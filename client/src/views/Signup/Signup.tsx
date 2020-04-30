@@ -8,7 +8,7 @@ const Signup: React.FC = () => {
     return (
         <article>
             <Header />
-            <h1>SIGNUP</h1>
+            
         </article>
     )
 }
