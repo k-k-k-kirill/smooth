@@ -4,6 +4,12 @@
 //Variables
 @import './common/variables';
 
+// Import Bootstrap and its default variables
+@import '~bootstrap/scss/bootstrap.scss';
+
+//Hamburgers
+@import '~hamburgers/_sass/hamburgers/hamburgers';
+
 // Global styles
 @import './common/global';
 
@@ -16,9 +22,14 @@
 //Buttons
 @import './common/buttons';
 
+//Links
+@import './common/links';
+
 //Components
 @import '../../components/Header/Header';
-@import '../../components/SplitSection/SplitSection.scss';
+@import '../../components/ColumnedContent/ColumnedContent';
+@import '../../components/UI/Hamburger/Hamburger';
+@import '../../components/UI/NavHorizontal/NavHorizontal';
 
 //Views
 @import '../../views/Home/Home';

@@ -3,8 +3,8 @@ import { ReactComponent as HomeIllustration } from '../../assets/images/undraw_n
 
 //Components
 import Header from '../../components/Header/Header'
-import SplitSection from '../../components/SplitSection/SplitSection'
-import Button from '../../components/Button/Button'
+import ColumnedContent from '../../components/ColumnedContent/ColumnedContent'
+import Button from '../../components/UI/Button/Button'
 import { RouteComponentProps } from 'react-router-dom'
 
 interface Props extends RouteComponentProps {}
@@ -13,16 +13,16 @@ const Home: React.FC<Props> = ({ history }) => {
     return (
         <article>
             <Header />
-            <SplitSection>
-                <div className="content-column">
+            <ColumnedContent>
+                <div className="content-column col-lg-6">
                     <h1>Not just another to-do list app</h1>
-                    <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, </p>
+                    <p className="body-paragraph">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, </p>
                     <Button label='Start using' clicked={() => history.push('/signup')} />
                 </div>
-                <div className="illustration-column">
+                <div className="illustration-column col-lg-6">
                     <HomeIllustration />
                 </div>
-            </SplitSection>
+            </ColumnedContent>
         </article>
     )
 }

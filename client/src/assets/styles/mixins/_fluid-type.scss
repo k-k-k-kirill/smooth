@@ -1,8 +1,8 @@
 @function strip-unit($value) {
-    @return $value / ($value * 0 + 1);
-  }
+  @return $value / ($value * 0 + 1);
+}
   
-  @mixin fluid-type($min-font-size, $max-font-size, $min-margin-bottom: 0, $max-margin-bottom: 0, $min-vw: $breakpoint-min, $max-vw: $breakpoint-max) {
+  @mixin fluid-type($min-font-size, $max-font-size, $min-margin-bottom: 0rem, $max-margin-bottom: 0rem, $min-vw: $breakpoint-min, $max-vw: $breakpoint-max) {
     $u1: unit($min-vw);
     $u2: unit($max-vw);
     $u3: unit($min-font-size);
@@ -12,16 +12,16 @@
   
     @if $u1 == $u2 and $u1 == $u3 and $u1 == $u4 and $u1 == $u5 and $u1 == $u6 {
       & {
-        font-size: $min-font-size;
+        font-size: $min-font-size !important;
         margin-bottom: $min-margin-bottom;
   
         @media (min-width: $min-vw) {
-          font-size: calc(#{$min-font-size} + #{strip-unit($max-font-size - $min-font-size)} * ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)}));
+          font-size: calc(#{$min-font-size} + #{strip-unit($max-font-size - $min-font-size)} * ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)})) !important;
           margin-bottom: calc(#{$min-margin-bottom} + #{strip-unit($max-margin-bottom - $min-margin-bottom)} * ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)}));
         }
   
         @media (min-width: $max-vw) {
-          font-size: $max-font-size;
+          font-size: $max-font-size !important;
           margin-bottom: $max-margin-bottom;
         }
       }

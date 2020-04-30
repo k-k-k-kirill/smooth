@@ -1,14 +1,35 @@
 .app-header {
+    position: relative;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     max-width: 100%;
-    padding: 1rem 2rem;
+    padding: 1rem 1rem;
     background-color: $dark-blue;
+    z-index: 9999;
+    border-bottom: 1px solid $white;
+
+    @media (min-width: 768px) {
+        padding: 1rem 2rem;
+    }
+
+    &__button {
+        display: none;
+
+        @media (min-width: 400px) {
+            display: inline-block;
+        }
+    }
 
     svg {
         height: 40px;
         width: auto;
     }
+}
+
+.top-nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }

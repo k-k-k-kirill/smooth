@@ -1,0 +1,18 @@
+.hamburger {
+    display: block;
+    margin-top: 5px;
+
+    @media (min-width: 400px) {
+        margin-right: 1rem;
+    }
+
+    @media (min-width: 768px) {
+        display: none;
+    }
+
+    &.is-active ~ .nav-items--mobile {
+        display: block;
+        height: auto;
+        top: 66px;
+    }
+}

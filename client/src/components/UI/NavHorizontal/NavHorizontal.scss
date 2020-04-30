@@ -1,0 +1,43 @@
+.nav-items {
+    display: none;
+
+    @media (min-width: 768px) {
+        display: block;
+    }
+
+    &--mobile {
+        display: none;
+        position: absolute;
+        top: 77px;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        transition: all 5s ease-in-out;
+
+        .inner {
+            position: relative;
+            height: 100%;
+            width: 100%;
+            background-color: $dark-blue;
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+
+        @media (min-width: 400px) {
+            text-align: right;
+        }
+
+        @media (min-width: 768px) {
+            display: none !important;
+        }
+    }
+
+    &__button {
+        margin-bottom: 2rem;
+        width: 80%;
+
+        @media (min-width: 400px) {
+            display: none;
+        }
+    }
+}
