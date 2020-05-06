@@ -5,6 +5,6 @@ const router = require('express').Router();
 const UsersRouter = require('../controllers/Users')
 
 // Routes.
-router.use('/users/', UsersRouter)
+router.use('/user/', UsersRouter)
 
 module.exports = router;
