@@ -3,6 +3,7 @@ const UsersRouter: Router = require('express').Router()
 import User from '../models/User'
 import jwt from 'jsonwebtoken'
 const mailer = require('../services/mailer/mailer')
+const { UniqueViolationError } = require('objection-db-errors');
 
 //Dotenv configuration
 require('dotenv').config()
@@ -37,23 +38,38 @@ UsersRouter.post('/signup/', async (req, res) => {
         }
 
         await mailer.send(message)
-        res.send(200)
+        res.status(200).json({
+            message: 'User created successfully.'
+        })
     } catch(err) {
-        res.send('Error creating user!')
+
+        if(err instanceof UniqueViolationError) {
+            res.status(500).json({
+                message: err.constraint
+            })
+        } else {
+            res.status(500)
+        }
     }
 })
 
 UsersRouter.get('/confirm/:token', (req, res) => {
     try {
         jwt.verify(req.params.token, es, async (err: any, decoded: any) => {
+            if(err) {
+                res.status(403).json({
+                    message: 'Error verifying your username.'
+                })
+            }
+
             if(decoded.user) {
                 const user: User = await User.query().findById(decoded.user).patch({ email_confirmed: true })
-                res.redirect('http://localhost:3001/login');
+                res.status(200).redirect('http://localhost:3001/login?confirmed=true');
             }
         });
     } catch(err) {
         console.log(err)
-        res.send('Error occured while confirming your e-mail address')
+        res.status(403).send('Error occured while confirming your e-mail address.')
     }
 })
 
