@@ -1,11 +1,11 @@
 import React from 'react'
-import { ReactComponent as HomeIllustration } from '../../assets/images/undraw_next_tasks_iubr.svg'
 
 //Components
 import Header from '../../components/Header/Header'
 import ColumnedContent from '../../components/ColumnedContent/ColumnedContent'
 import Button from '../../components/UI/Button/Button'
 import { RouteComponentProps } from 'react-router-dom'
+import { ReactComponent as HomeIllustration } from '../../assets/images/undraw_next_tasks_iubr.svg'
 
 interface Props extends RouteComponentProps {}
 

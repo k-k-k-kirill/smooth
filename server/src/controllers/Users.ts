@@ -1,7 +1,7 @@
 import { Router } from 'express'
-const UsersRouter: Router = require('express').Router()
 import User from '../models/User'
 import jwt from 'jsonwebtoken'
+const UsersRouter: Router = require('express').Router()
 const mailer = require('../services/mailer/mailer')
 const { UniqueViolationError } = require('objection-db-errors');
 
