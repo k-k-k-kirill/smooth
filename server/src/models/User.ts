@@ -14,12 +14,11 @@ export default class User extends DBErrors(Password(Model)) {
     static get jsonSchema() {
         return {
             type: 'object',
-            required: ['first_name', 'last_name', 'username', 'email', 'password'],
+            required: ['first_name', 'last_name', 'email', 'password'],
             properties: {
                 id: { type: 'integer' },
                 first_name: { type: 'string', minLength: 1, maxLength: 255 },
                 last_name: { type: 'string', minLength: 1, maxLength: 255 },
-                username: { type: 'string',  minLength: 1, maxLength: 255  },
                 password: { type: 'string',  minLength: 1, maxLength: 255  },
                 email: { type: 'string', minLength: 1, maxLength: 255 }
             }

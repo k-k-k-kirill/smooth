@@ -18,7 +18,6 @@ UsersRouter.get('/', (req, res) => {
 UsersRouter.post('/signup/', async (req, res) => {
     try {
         const user: User = await User.query().insert({
-            username: req.body.username,
             password: req.body.password,
             first_name: req.body.first_name,
             last_name: req.body.last_name,
@@ -33,16 +32,16 @@ UsersRouter.post('/signup/', async (req, res) => {
             from: 'vitchenko.kirill@gmail.com',
             to: user.email,
             subject: 'Confirm your e-mail address',
-            text: `To complete your registration, please, confirm you e-mail address by clicking this link http://localhost:3000/user/confirm/${token}`,
-            html: `<p>To complete your registration, please, confirm you e-mail address by clicking this link http://localhost:3000/user/confirm/${token}</p>`
+            text: `To complete your registration, please, confirm you e-mail address by clicking this link http://localhost:3000/user/email/confirm/${token}`,
+            html: `<p>To complete your registration, please, confirm you e-mail address by clicking this link http://localhost:3000/user/email/confirm/${token}</p>`
         }
 
         await mailer.send(message)
+
         res.status(200).json({
             message: 'User created successfully.'
         })
     } catch(err) {
-
         if(err instanceof UniqueViolationError) {
             res.status(500).json({
                 message: err.constraint
@@ -53,12 +52,12 @@ UsersRouter.post('/signup/', async (req, res) => {
     }
 })
 
-UsersRouter.get('/confirm/:token', (req, res) => {
+UsersRouter.get('/email/confirm/:token', (req, res) => {
     try {
         jwt.verify(req.params.token, es, async (err: any, decoded: any) => {
             if(err) {
                 res.status(403).json({
-                    message: 'Error verifying your username.'
+                    message: 'Error verifying your account.'
                 })
             }
 
@@ -70,6 +69,27 @@ UsersRouter.get('/confirm/:token', (req, res) => {
     } catch(err) {
         console.log(err)
         res.status(403).send('Error occured while confirming your e-mail address.')
+    }
+})
+
+UsersRouter.get('/email/unique/:email', async (req, res) => {
+    try {
+
+        if(req.params.email) {
+            let user_email: User = await User.query().select('email').where('email', req.params.email)
+
+            if(user_email.length > 0) {
+                res.status(200).send(false)
+            } else {
+                res.status(200).send(true)
+            }
+        } else {
+            res.status(200).send(true)
+        }
+
+
+    } catch(err) {
+        res.status(500)
     }
 })
 

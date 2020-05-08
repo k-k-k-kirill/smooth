@@ -24,10 +24,10 @@ const app: Application = express()
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
-// Append all routes.
-app.use(routes)
-
 //Cors
 app.use(cors())
+
+// Append all routes.
+app.use(routes)
 
 app.listen(SERVER_PORT, () => console.log('Server running on port ' + SERVER_PORT))

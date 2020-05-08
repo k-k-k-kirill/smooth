@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ChangeEvent } from 'react'
 import { useFormik } from 'formik'
 
 //User components
@@ -10,6 +10,9 @@ import TextField from '../../components/UI/Form/TextField/TextField'
 import Button from '../../components/UI/Button/Button'
 import InputError from '../../components/UI/Form/InputError/InputError'
 
+//Services
+import isEmailUnique from '../../services/isEmailUnique'
+
 interface FormErrors {
     firstName?: string,
     lastName?: string,
@@ -18,6 +21,7 @@ interface FormErrors {
     confirm_password?: string
 }
 
+//Validator for sign up form
 const validate = (values: any) => {
     const errors: FormErrors = {}
     if (!values.firstName) {
@@ -44,9 +48,9 @@ const validate = (values: any) => {
         errors.confirm_password = 'Passwords don\'t match.'
     } 
     
-    // if (values.password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/)) {
-    //     errors.password = 'Your password must be between 8 to 15 characters long, contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character.'
-    // }
+    if (!values.password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/)) {
+        errors.password = 'Your password must be between 8 to 15 characters long, contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character.'
+    }
 
     if(!values.confirm_password) {
         errors.confirm_password = 'This field is required.'
@@ -65,10 +69,23 @@ const Signup: React.FC = () => {
             confirm_password: ''
         },
         validate,
+        validateOnChange: false,
+        validateOnBlur: false,
         onSubmit: values => {
             alert(JSON.stringify(values, null, 2));
         }
     })
+
+    //Custom handler for e-mail field blur event that checks if e-mail is unique.
+    const handleEmailBlur = async (e: any) => {
+        const isUnique = await isEmailUnique(e.target.value)
+
+        if(isUnique) {
+            formik.setFieldError('email', '')
+        } else {
+            formik.setFieldError('email', 'Account with such e-mail address already exists.')
+        }
+    }
 
     return (
         <article>
@@ -84,13 +101,13 @@ const Signup: React.FC = () => {
                         <TextField classes="mb-4" placeholder="Last name" value={formik.values.lastName} name="lastName" id="lastName" change={formik.handleChange} />
 
                         {formik.errors.email ? <InputError>{formik.errors.email}</InputError> : null}
-                        <TextField classes="mb-4" placeholder="Email" value={formik.values.email} name="email" id="email" change={formik.handleChange} />
+                        <TextField classes="mb-4" type="email" placeholder="Email" value={formik.values.email} name="email" id="email" blur={handleEmailBlur} change={formik.handleChange} />
 
                         {formik.errors.password ? <InputError>{formik.errors.password}</InputError> : null}
-                        <TextField classes="mb-4" placeholder="Password" value={formik.values.password} name="password" id="password" change={formik.handleChange} />
+                        <TextField classes="mb-4" type="password" placeholder="Password" value={formik.values.password} name="password" id="password" change={formik.handleChange} />
 
                         {formik.errors.confirm_password ? <InputError>{formik.errors.confirm_password}</InputError> : null}
-                        <TextField classes="mb-6" placeholder="Confirm password" value={formik.values.confirm_password} name="confirm_password" id="confirm_password" change={formik.handleChange} />
+                        <TextField classes="mb-6" type="password" placeholder="Confirm password" value={formik.values.confirm_password} name="confirm_password" id="confirm_password" change={formik.handleChange} />
 
                         <Button type="submit" fluid label="Create account" />
                     </form>
