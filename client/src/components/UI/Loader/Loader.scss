@@ -1,0 +1,97 @@
+.loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    &__container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__content {
+        animation-name: content-rotate;
+        animation-duration: 4s;
+        animation-iteration-count: infinite;
+
+        @keyframes content-rotate {
+            0% {
+                transform: rotate(0);
+            }
+
+            25% {
+                transform: rotate(90deg);
+            }
+
+            50% {
+                transform: rotate(180deg);
+            }
+
+            75% {
+                transform: rotate(270deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    }
+
+    &__element {
+        display: inline-block;
+        content: '';
+        width: 55px;
+        height: 55px;
+        border-radius: 50%;
+        @extend .shadow-sm;
+
+        &--pinkish {
+            background-color: $pinkish;
+            animation-name: pinkish-bounce;
+            animation-duration: 1s;
+            animation-iteration-count: infinite;
+            will-change: margin-right;
+
+            @keyframes pinkish-bounce {
+                0% {
+                    margin-right: 0;
+                    
+                    
+                }
+                50% {
+                    margin-right: 25px;
+                }
+
+                100% {
+                    margin-right: 0;
+                }
+            }
+        }
+
+        &--purple {
+            background-color: $purple-light;
+            animation-name: purple-bounce;
+            animation-duration: 1s;
+            animation-iteration-count: infinite;
+            will-change: margin-left;
+
+            @keyframes purple-bounce {
+                0% {
+                    margin-left: 0;
+                }
+                50% {
+                    margin-left: 25px;
+                }
+
+                100% {
+                    margin-left: 0;
+                }
+            }
+        }
+    }
+}

@@ -3,10 +3,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const UsersRouter = require('express').Router();
 const User_1 = __importDefault(require("../models/User"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const mailer_1 = __importDefault(require("../services/mailer/mailer"));
+const UsersRouter = require('express').Router();
+const mailer = require('../services/mailer/mailer');
+const { UniqueViolationError } = require('objection-db-errors');
 //Dotenv configuration
 require('dotenv').config();
 //Environment variables
@@ -17,30 +18,78 @@ UsersRouter.get('/', (req, res) => {
 UsersRouter.post('/signup/', async (req, res) => {
     try {
         const user = await User_1.default.query().insert({
-            username: req.body.username,
             password: req.body.password,
-            first_name: req.body.first_name,
-            last_name: req.body.last_name,
+            first_name: req.body.firstName,
+            last_name: req.body.lastName,
             email: req.body.email
         });
         const token = jsonwebtoken_1.default.sign({ user: user.id }, es, {
             expiresIn: "1h"
         });
         const message = {
-            to: req.body.email,
             from: 'vitchenko.kirill@gmail.com',
-            subject: 'Confirm your email address',
-            text: `Please, confirm your e-mail address by clicking this link localhost:3000/user/confirm/?t=${token}`,
-            html: `<p>Please, confirm your e-mail address by clicking this link localhost:3000/user/confirm/?t=${token}</p>`,
+            to: user.email,
+            subject: 'Confirm your e-mail address',
+            text: `To complete your registration, please, confirm you e-mail address by clicking this link http://localhost:3000/user/email/confirm/${token}`,
+            html: `<p>To complete your registration, please, confirm you e-mail address by clicking this link http://localhost:3000/user/email/confirm/${token}</p>`
         };
-        console.log(mailer_1.default);
-        const mail = mailer_1.default.send(message).then((res) => {
-            console.log(res);
-        }).catch((err) => console.log(err));
-        res.send(token);
+        await mailer.send(message);
+        res.status(200).json({
+            message: 'User created successfully.'
+        });
     }
     catch (err) {
-        res.send('Error creating user!');
+        if (err instanceof UniqueViolationError) {
+            res.status(500).json({
+                message: err.constraint
+            });
+        }
+        else {
+            res.status(500);
+        }
+    }
+});
+UsersRouter.get('/email/confirm/:token', (req, res) => {
+    try {
+        jsonwebtoken_1.default.verify(req.params.token, es, async (err, decoded) => {
+            if (err) {
+                if (err.name == 'TokenExpiredError') {
+                    res.status(404).redirect('http://localhost:3001/signup?expired=true');
+                }
+                else {
+                    res.status(403).json({
+                        message: 'Error verifying your account.'
+                    });
+                }
+            }
+            if (decoded.user) {
+                const user = await User_1.default.query().findById(decoded.user).patch({ email_confirmed: true });
+                res.status(200).redirect('http://localhost:3001/login?confirmed=true');
+            }
+        });
+    }
+    catch (err) {
+        console.log(err);
+        res.status(403).send('Error occured while confirming your e-mail address.');
+    }
+});
+UsersRouter.get('/email/unique/:email', async (req, res) => {
+    try {
+        if (req.params.email) {
+            let user_email = await User_1.default.query().select('email').where('email', req.params.email);
+            if (user_email.length > 0) {
+                res.status(200).send(false);
+            }
+            else {
+                res.status(200).send(true);
+            }
+        }
+        else {
+            res.status(200).send(true);
+        }
+    }
+    catch (err) {
+        res.status(500);
     }
 });
 module.exports = UsersRouter;

@@ -19,8 +19,8 @@ UsersRouter.post('/signup/', async (req, res) => {
     try {
         const user: User = await User.query().insert({
             password: req.body.password,
-            first_name: req.body.first_name,
-            last_name: req.body.last_name,
+            first_name: req.body.firstName,
+            last_name: req.body.lastName,
             email: req.body.email
         })
 
@@ -56,9 +56,13 @@ UsersRouter.get('/email/confirm/:token', (req, res) => {
     try {
         jwt.verify(req.params.token, es, async (err: any, decoded: any) => {
             if(err) {
-                res.status(403).json({
-                    message: 'Error verifying your account.'
-                })
+                if(err.name == 'TokenExpiredError') {
+                    res.status(404).redirect('http://localhost:3001/signup?expired=true')
+                } else {
+                    res.status(403).json({
+                        message: 'Error verifying your account.'
+                    })
+                }
             }
 
             if(decoded.user) {

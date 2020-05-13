@@ -2,7 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const objection_1 = require("objection");
 const Password = require('objection-password')();
-class User extends Password(objection_1.Model) {
+const { DBErrors } = require('objection-db-errors');
+class User extends DBErrors(Password(objection_1.Model)) {
     static get tableName() {
         return 'user';
     }
@@ -12,12 +13,11 @@ class User extends Password(objection_1.Model) {
     static get jsonSchema() {
         return {
             type: 'object',
-            required: ['first_name', 'last_name', 'username', 'email', 'password'],
+            required: ['first_name', 'last_name', 'email', 'password'],
             properties: {
                 id: { type: 'integer' },
                 first_name: { type: 'string', minLength: 1, maxLength: 255 },
                 last_name: { type: 'string', minLength: 1, maxLength: 255 },
-                username: { type: 'string', minLength: 1, maxLength: 255 },
                 password: { type: 'string', minLength: 1, maxLength: 255 },
                 email: { type: 'string', minLength: 1, maxLength: 255 }
             }

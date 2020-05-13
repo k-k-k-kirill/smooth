@@ -4,6 +4,7 @@ const objection_1 = require("objection");
 const express = require('express');
 const knex = require('./database/database');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 //Initialise Objection
 objection_1.Model.knex(knex);
 //Dotenv configuration
@@ -16,6 +17,8 @@ const app = express();
 // BodyParser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+//Cors
+app.use(cors());
 // Append all routes.
 app.use(routes);
 app.listen(SERVER_PORT, () => console.log('Server running on port ' + SERVER_PORT));
