@@ -3,13 +3,15 @@ import User from '../models/User'
 import jwt from 'jsonwebtoken'
 const UsersRouter: Router = require('express').Router()
 const mailer = require('../services/mailer/mailer')
-const { UniqueViolationError } = require('objection-db-errors');
+const { UniqueViolationError } = require('objection-db-errors')
+const passport = require('../middleware/auth/passport')
 
 //Dotenv configuration
 require('dotenv').config()
 
 //Environment variables
 const es: any = process.env.ES
+const ls: any = process.env.LOGIN_SECRET
 
 UsersRouter.get('/', (req, res) => {
     res.send('Router works!')
@@ -95,6 +97,15 @@ UsersRouter.get('/email/unique/:email', async (req, res) => {
     } catch(err) {
         res.status(500)
     }
+})
+
+UsersRouter.post('/login', passport.authenticate('local', { session: false }), (req: any, res: any) => {
+
+    const token: string =  jwt.sign({ user: req.user.id }, ls, {
+        expiresIn: "1h"
+    })
+    res.cookie('token', token, { maxAge: 60 * 60 * 24 * 7, httpOnly: true })
+    res.status(200).send(token)
 })
 
 module.exports = UsersRouter

@@ -1,4 +1,4 @@
-import { Model } from 'objection'
+const Model = require('objection').Model
 const Password = require('objection-password')()
 const { DBErrors } = require('objection-db-errors')
 
