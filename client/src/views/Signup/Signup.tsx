@@ -66,7 +66,7 @@ const validate = async (values: any) => {
     return errors;
 }
 
-const Signup: React.FC = (props: any) => {
+const Signup: React.FC = () => {
     const [ submissionSuccess, setSubmissionSuccess ] = useState(false)
     const [ submitted, setSubmitted ] = useState(false)
     const [ loading, setLoading ] = useState(false)

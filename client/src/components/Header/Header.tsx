@@ -27,8 +27,8 @@ const Header: React.FC<Props>  = ({ history }) => {
     return (
         <>
             <header className="app-header">
-                <div>
-                    <Logo />
+                <div className="app-logo">
+                    <Logo onClick={() => {history.push('/')}} />
                 </div>
                 <div className="top-nav">
                     <NavHorizontal items={navItems} />

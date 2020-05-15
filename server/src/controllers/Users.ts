@@ -12,6 +12,7 @@ require('dotenv').config()
 //Environment variables
 const es: any = process.env.ES
 const ls: any = process.env.LOGIN_SECRET
+const rs: any = process.env.REFRESH_SECRET
 
 UsersRouter.get('/', (req, res) => {
     res.send('Router works!')
@@ -101,11 +102,15 @@ UsersRouter.get('/email/unique/:email', async (req, res) => {
 
 UsersRouter.post('/login', passport.authenticate('local', { session: false }), (req: any, res: any) => {
 
-    const token: string =  jwt.sign({ user: req.user.id }, ls, {
-        expiresIn: "1h"
+    const access_token: string =  jwt.sign({ user: req.user.id }, ls, {
+        expiresIn: "1d"
     })
-    res.cookie('token', token, { maxAge: 60 * 60 * 24 * 7, httpOnly: true })
-    res.status(200).send(token)
+
+    const refresh_token: string =  jwt.sign({ user: req.user.id }, rs, {
+        expiresIn: "7d"
+    })
+
+    res.cookie('smooth', refresh_token, { maxAge: 60 * 60 * 24 * 7, httpOnly: true }).send(access_token)
 })
 
 module.exports = UsersRouter
