@@ -1,16 +1,16 @@
 import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { ApplicationState } from '../../index'
 
 const PrivateRoute = ({component, ...rest}: any) => {
-    let isAuthenticated = false
+    let token = useSelector((state: ApplicationState) =>  state.auth.accessToken )
+
     const routeComponent = (props: any) => (
-        isAuthenticated
+        token
             ? React.createElement(component, props)
             : <Redirect to={{
-                pathname: '/login',
-                state: {
-                    protected: true
-                }
+                pathname: '/login'
             }} />
     );
     return <Route {...rest} render={routeComponent}/>;

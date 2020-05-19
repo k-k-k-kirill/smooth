@@ -4,13 +4,13 @@ import axios from '../../axios/instance'
 
 //User components
 import '../../components/Header/Header'
-import Header from '../../components/Header/Header'
 import ColumnedContent from '../../components/ColumnedContent/ColumnedContent'
 import { ReactComponent as FormIllustration } from '../../assets/images/undraw_online_articles.svg'
 import TextField from '../../components/UI/Form/TextField/TextField'
 import Button from '../../components/UI/Button/Button'
 import InputError from '../../components/UI/Form/InputError/InputError'
 import Loader from '../../components/UI/Loader/Loader'
+import LayoutVertical from '../../components/Layouts/LayoutVertical/LayoutVertical'
 
 //Services
 import isEmailUnique from '../../services/isEmailUnique'
@@ -118,8 +118,7 @@ const Signup: React.FC = () => {
         { loading ? (
             <Loader />
         ) : (
-            <article>
-                <Header />
+            <LayoutVertical>
                 <ColumnedContent>
                     <div className="col-lg-5 mb-6">
                         <h1 className="text-center">Sign up</h1>
@@ -161,7 +160,7 @@ const Signup: React.FC = () => {
                         <FormIllustration />
                     </div>
                 </ColumnedContent>
-            </article>
+            </LayoutVertical>
         ) }
         </>
         

@@ -11,7 +11,7 @@ import { devToolsEnhancer } from 'redux-devtools-extension';
 //Reducers
 import authReducer from './store/reducers/auth/auth'
 
-interface ApplicationState {
+export interface ApplicationState {
   auth: authState
 }
 

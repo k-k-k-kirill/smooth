@@ -8,6 +8,7 @@ import PrivateRoute from './components/PrivateRoute/PrivateRoute'
 import Home from './views/Home/Home'
 import Login from './views/Login/Login'
 import Signup from './views/Signup/Signup'
+import Upcoming from './views/Upcoming/Upcoming'
 import NotFound from './views/404/404'
 
 function App() {
@@ -18,7 +19,7 @@ function App() {
             <Route exact path="/" component={Home} />
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
-            <PrivateRoute path="/user" component={Signup} />
+            <PrivateRoute path="/upcoming" component={Upcoming} />
             <Route component={NotFound} />
           </Switch>
         </Router>

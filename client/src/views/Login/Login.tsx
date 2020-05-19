@@ -6,12 +6,12 @@ import { withRouter, RouteComponentProps } from 'react-router-dom'
 
 //Components
 import '../../components/Header/Header'
-import Header from '../../components/Header/Header'
 import ColumnedContent from '../../components/ColumnedContent/ColumnedContent'
 import { ReactComponent as FormIllustration } from '../../assets/images/undraw_online_articles.svg'
 import TextField from '../../components/UI/Form/TextField/TextField'
 import Button from '../../components/UI/Button/Button'
 import Loader from '../../components/UI/Loader/Loader'
+import LayoutVertical from '../../components/Layouts/LayoutVertical/LayoutVertical'
 
 //Actions
 import authActions from '../../store/actions/auth'
@@ -38,7 +38,10 @@ const Login: React.FC<Props> = ({ history, location }) => {
             try {
                 const res = await axios.post('/user/login', {...values})
                 const token = res.data
-                dispatch({ type: authActions.SAVE_TOKEN, token })
+
+                dispatch({ type: authActions.SAVE_TOKEN, accessToken: token })
+
+                history.push('/user')
                 setSubmissionError('')
             }catch(err) {
                 if( err.response.status === 400 || err.response.status === 404 ) {
@@ -57,8 +60,7 @@ const Login: React.FC<Props> = ({ history, location }) => {
         { loading ? (
             <Loader />
         ) : (
-            <article>
-                <Header />
+            <LayoutVertical>
                 <ColumnedContent>
                     <div className="col-lg-4 mb-6">
                         <h1 className="text-center">Log in</h1>
@@ -72,7 +74,7 @@ const Login: React.FC<Props> = ({ history, location }) => {
                             <TextField classes="mb-4" type="password" placeholder="Password" value={formik.values.password} name="password" id="password" change={formik.handleChange} />
                             <div className="d-flex flex-row justify-content-between button-group">
                                 <Button type="submit" label="Log in" />
-                                <Button label="Register" purple clicked={() => history.push('/signup')} />
+                                <Button label="Sign Up" purple clicked={() => history.push('/signup')} />
                             </div>
                         </form>
                     </div>
@@ -80,7 +82,7 @@ const Login: React.FC<Props> = ({ history, location }) => {
                         <FormIllustration />
                     </div>
                 </ColumnedContent>
-            </article>
+            </LayoutVertical>
         ) }
         </>
     )

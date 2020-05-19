@@ -1,18 +1,17 @@
 import React from 'react'
 
 //Components
-import Header from '../../components/Header/Header'
 import ColumnedContent from '../../components/ColumnedContent/ColumnedContent'
 import Button from '../../components/UI/Button/Button'
 import { RouteComponentProps } from 'react-router-dom'
 import { ReactComponent as HomeIllustration } from '../../assets/images/undraw_next_tasks_iubr.svg'
+import LayoutVertical from '../../components/Layouts/LayoutVertical/LayoutVertical'
 
 interface Props extends RouteComponentProps {}
 
 const Home: React.FC<Props> = ({ history }) => {
     return (
-        <article>
-            <Header />
+        <LayoutVertical>
             <ColumnedContent>
                 <div className="content-column col-lg-6">
                     <h1>Not just another to-do list app</h1>
@@ -23,7 +22,7 @@ const Home: React.FC<Props> = ({ history }) => {
                     <HomeIllustration />
                 </div>
             </ColumnedContent>
-        </article>
+        </LayoutVertical>
     )
 }
 
