@@ -3,10 +3,12 @@ import ReactDOM from 'react-dom';
 import './assets/styles/main.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { createStore, combineReducers, Reducer, Store } from 'redux'
+import { createStore, combineReducers, Reducer, Store, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import authState from './store/reducers/auth/types'
-import { devToolsEnhancer } from 'redux-devtools-extension';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import createSagaMiddleware from 'redux-saga';
+import rootSaga from './store/saga/rootSaga'
 
 //Reducers
 import authReducer from './store/reducers/auth/auth'
@@ -19,7 +21,13 @@ const rootReducer: Reducer<ApplicationState> = combineReducers<ApplicationState>
   auth: authReducer
 })
 
-const store: Store<Reducer> = createStore(rootReducer, devToolsEnhancer({}))
+const saga = createSagaMiddleware()
+
+const store: Store<any> = createStore(rootReducer, composeWithDevTools(
+  applyMiddleware(saga)
+))
+
+saga.run(rootSaga)
 
 ReactDOM.render(
   <React.StrictMode>

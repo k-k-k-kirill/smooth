@@ -1,16 +1,27 @@
-import authActions from '../../actions/auth'
+import actions from '../../actions/actions'
 import authState from './types'
 
 const authReducer = (state: authState = {
-    accessToken: ''
+    email: '',
+    password: '',
+    token: ''
 }, action: any) => {
 
     switch(action.type) {
-        case authActions.SAVE_TOKEN:
+        case actions.auth.LOGIN_REQUEST:
             state = {
                 ...state,
-                accessToken: action.accessToken
+                email: action.values.email,
+                password: action.values.password
             }
+            return state
+        case actions.auth.LOGIN_SUCCESS:
+            state = {
+                ...state,
+                token: action.token
+            }
+            return state
+        case actions.auth.LOGIN_FAILED:
             return state
         default:
             return state

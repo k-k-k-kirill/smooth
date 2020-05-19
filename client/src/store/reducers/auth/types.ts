@@ -1,3 +1,5 @@
 export default interface authState {
-    accessToken: string
+    email: string,
+    password: string,
+    token: string
 }

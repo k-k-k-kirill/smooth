@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { useFormik } from 'formik'
-import axios from '../../axios/instance'
 import { useDispatch } from 'react-redux'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 
@@ -14,7 +13,7 @@ import Loader from '../../components/UI/Loader/Loader'
 import LayoutVertical from '../../components/Layouts/LayoutVertical/LayoutVertical'
 
 //Actions
-import authActions from '../../store/actions/auth'
+import actions from '../../store/actions/actions'
 
 interface Props extends RouteComponentProps {}
 
@@ -36,12 +35,9 @@ const Login: React.FC<Props> = ({ history, location }) => {
             setLoading(true)
 
             try {
-                const res = await axios.post('/user/login', {...values})
-                const token = res.data
+                dispatch({ type: actions.auth.LOGIN_REQUEST, values })
 
-                dispatch({ type: authActions.SAVE_TOKEN, accessToken: token })
-
-                history.push('/user')
+                history.push('/upcoming')
                 setSubmissionError('')
             }catch(err) {
                 if( err.response.status === 400 || err.response.status === 404 ) {
