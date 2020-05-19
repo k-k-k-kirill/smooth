@@ -18,7 +18,7 @@ import authActions from '../../store/actions/auth'
 
 interface Props extends RouteComponentProps {}
 
-const Login: React.FC<Props> = ({ history }) => {
+const Login: React.FC<Props> = ({ history, location }) => {
     const [ loading, setLoading ] = useState(false)
     const [ submissionError, setSubmissionError ] = useState('')
 

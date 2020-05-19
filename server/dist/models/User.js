@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const objection_1 = require("objection");
+const Model = require('objection').Model;
 const Password = require('objection-password')();
 const { DBErrors } = require('objection-db-errors');
-class User extends DBErrors(Password(objection_1.Model)) {
+class User extends DBErrors(Password(Model)) {
     static get tableName() {
         return 'user';
     }
@@ -28,7 +28,7 @@ class User extends DBErrors(Password(objection_1.Model)) {
         const Project = require('./Project');
         return {
             project_templates: {
-                relation: objection_1.Model.HasManyRelation,
+                relation: Model.HasManyRelation,
                 modelClass: ProjectTemplate,
                 join: {
                     from: 'user.id',
@@ -36,7 +36,7 @@ class User extends DBErrors(Password(objection_1.Model)) {
                 }
             },
             projects: {
-                relation: objection_1.Model.HasManyRelation,
+                relation: Model.HasManyRelation,
                 modelClass: Project,
                 join: {
                     from: 'user.id',

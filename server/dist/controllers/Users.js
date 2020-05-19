@@ -8,10 +8,13 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const UsersRouter = require('express').Router();
 const mailer = require('../services/mailer/mailer');
 const { UniqueViolationError } = require('objection-db-errors');
+const passport = require('../middleware/auth/passport');
 //Dotenv configuration
 require('dotenv').config();
 //Environment variables
 const es = process.env.ES;
+const ls = process.env.LOGIN_SECRET;
+const rs = process.env.REFRESH_SECRET;
 UsersRouter.get('/', (req, res) => {
     res.send('Router works!');
 });
@@ -91,5 +94,14 @@ UsersRouter.get('/email/unique/:email', async (req, res) => {
     catch (err) {
         res.status(500);
     }
+});
+UsersRouter.post('/login', passport.authenticate('local', { session: false }), (req, res) => {
+    const access_token = jsonwebtoken_1.default.sign({ user: req.user.id }, ls, {
+        expiresIn: "1d"
+    });
+    const refresh_token = jsonwebtoken_1.default.sign({ user: req.user.id }, rs, {
+        expiresIn: "7d"
+    });
+    res.cookie('smooth', refresh_token, { maxAge: 60 * 60 * 24 * 7, httpOnly: true }).send(access_token);
 });
 module.exports = UsersRouter;

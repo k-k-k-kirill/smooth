@@ -1,0 +1,15 @@
+.not-found {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 80vh;
+
+    div {
+        text-align: center;
+    }
+
+    &__subtitle {
+        color: $light;
+    }
+}
