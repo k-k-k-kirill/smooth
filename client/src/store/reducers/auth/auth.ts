@@ -4,7 +4,8 @@ import authState from './types'
 const authReducer = (state: authState = {
     email: '',
     password: '',
-    token: ''
+    token: '',
+    authenticated: false,
 }, action: any) => {
 
     switch(action.type) {
@@ -18,7 +19,8 @@ const authReducer = (state: authState = {
         case actions.auth.LOGIN_SUCCESS:
             state = {
                 ...state,
-                token: action.token
+                token: action.token,
+                authenticated: true
             }
             return state
         case actions.auth.LOGIN_FAILED:

@@ -9,13 +9,21 @@ const auth = (state: ApplicationState) => ({
 })
 
 export default function* loginWorker() {
+    yield put({ type: actions.ui.SET_LOADING })
+
     try {
         const values = yield select(auth)
         const res = yield axios.post('/user/login', {...values})
         const token = yield res.data
         yield put({ type: actions.auth.LOGIN_SUCCESS, token })
     } catch(err) {
-        yield put({ type: actions.auth.LOGIN_FAILED })
+        if(err.response.status === 401) {
+           yield put({ type: actions.error.WRONG_CREDENTIALS })
+        } else {
+           yield put({ type: actions.error.SERVER_PROBLEMS })
+        }
     }
+
+    yield put({ type: actions.ui.UNSET_LOADING })
 
 }

@@ -4,7 +4,9 @@ import { useSelector } from 'react-redux'
 import { ApplicationState } from '../../index'
 
 const PrivateRoute = ({component, ...rest}: any) => {
-    let token = useSelector((state: ApplicationState) =>  state.auth.token )
+    let token = useSelector((state: ApplicationState) =>  state.auth.authenticated )
+
+    console.log(token)
 
     const routeComponent = (props: any) => (
         token

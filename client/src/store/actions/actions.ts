@@ -8,6 +8,10 @@ const actions = {
     ui: {
         SET_LOADING: 'SET_LOADING',
         UNSET_LOADING: 'UNSET_LOADING'
+    },
+    error: {
+        WRONG_CREDENTIALS: 'WRONG_CREDENTIALS',
+        SERVER_PROBLEMS: 'SERVER_PROBLEMS'
     }
 }
 

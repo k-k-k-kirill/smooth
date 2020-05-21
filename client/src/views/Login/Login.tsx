@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useFormik } from 'formik'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 
 //Components
@@ -15,13 +15,21 @@ import LayoutVertical from '../../components/Layouts/LayoutVertical/LayoutVertic
 //Actions
 import actions from '../../store/actions/actions'
 
+//Types
+import { ApplicationState } from '../../index'
+
 interface Props extends RouteComponentProps {}
 
 const Login: React.FC<Props> = ({ history, location }) => {
-    const [ loading, setLoading ] = useState(false)
-    const [ submissionError, setSubmissionError ] = useState('')
-
     const dispatch = useDispatch()
+
+    const loading = useSelector((state: ApplicationState) => state.ui.loading)
+    const authenticated = useSelector((state: ApplicationState) => state.auth.authenticated)
+    const error = useSelector((state: ApplicationState) => state.error.message)
+
+    if(authenticated) {
+        history.push('/upcoming')
+    }
 
     //Use formik hook to create <Formik> component.
     const formik = useFormik({
@@ -32,22 +40,7 @@ const Login: React.FC<Props> = ({ history, location }) => {
         validateOnChange: false,
         validateOnBlur: false,
         onSubmit: async values => {
-            setLoading(true)
-
-            try {
-                dispatch({ type: actions.auth.LOGIN_REQUEST, values })
-
-                history.push('/upcoming')
-                setSubmissionError('')
-            }catch(err) {
-                if( err.response.status === 400 || err.response.status === 404 ) {
-                    setSubmissionError('Wrong e-mail or password.')
-                } else {
-                    setSubmissionError('Our login system is experiencing issues. Please, try again later.')
-                }
-            }
-
-            setLoading(false)
+            dispatch({ type: actions.auth.LOGIN_REQUEST, values })
         }
     })
 
@@ -61,7 +54,7 @@ const Login: React.FC<Props> = ({ history, location }) => {
                     <div className="col-lg-4 mb-6">
                         <h1 className="text-center">Log in</h1>
 
-                        { submissionError ? <p className="mb-4 text-center">{submissionError}</p> : null }
+                        { error ? <p className="mb-4 text-center">{error}</p> : null }
 
                         <form onSubmit={formik.handleSubmit}>
 
