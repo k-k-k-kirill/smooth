@@ -4,17 +4,17 @@ import { useSelector } from 'react-redux'
 import { ApplicationState } from '../../index'
 
 const PrivateRoute = ({component, ...rest}: any) => {
-    let token = useSelector((state: ApplicationState) =>  state.auth.authenticated )
+    let authenticated = useSelector((state: ApplicationState) =>  state.auth.authenticated )
 
-    console.log(token)
-
-    const routeComponent = (props: any) => (
-        token
+    const routeComponent = (props: any) => {
+        return (
+            authenticated === true
             ? React.createElement(component, props)
             : <Redirect to={{
                 pathname: '/login'
             }} />
-    );
+        )
+    }
     return <Route {...rest} render={routeComponent}/>;
 };
 

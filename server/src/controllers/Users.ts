@@ -1,4 +1,4 @@
-import { Router } from 'express'
+import { Router, Request, Response } from 'express'
 import User from '../models/User'
 import jwt from 'jsonwebtoken'
 const UsersRouter: Router = require('express').Router()
@@ -9,16 +9,16 @@ const passport = require('../middleware/auth/passport')
 //Dotenv configuration
 require('dotenv').config()
 
+//Utils
+import createAccessToken from '../utils/createAccessToken'
+import createRefreshToken from '../utils/createRefreshToken'
+import createEmailToken from '../utils/createEmailToken'
+
 //Environment variables
-const es: any = process.env.ES
-const ls: any = process.env.LOGIN_SECRET
-const rs: any = process.env.REFRESH_SECRET
+const ls: string = process.env.LOGIN_SECRET!
 
-UsersRouter.get('/', (req, res) => {
-    res.send('Router works!')
-})
-
-UsersRouter.post('/signup/', async (req, res) => {
+//New user registration route
+UsersRouter.post('/signup/', async (req: Request, res: Response) => {
     try {
         const user: User = await User.query().insert({
             password: req.body.password,
@@ -27,9 +27,7 @@ UsersRouter.post('/signup/', async (req, res) => {
             email: req.body.email
         })
 
-        const token: string =  jwt.sign({ user: user.id }, es, {
-            expiresIn: "1h"
-        })
+        const token: string =  createEmailToken(user.id)
 
         const message = {
             from: 'vitchenko.kirill@gmail.com',
@@ -55,23 +53,22 @@ UsersRouter.post('/signup/', async (req, res) => {
     }
 })
 
-UsersRouter.get('/email/confirm/:token', (req, res) => {
+//Email confirmation route
+UsersRouter.get('/email/confirm/:token', (req: Request, res: Response) => {
     try {
-        jwt.verify(req.params.token, es, async (err: any, decoded: any) => {
+        jwt.verify(req.params.token, process.env.EMAIL_SECRET!, async (err: any, decoded: any) => {
             if(err) {
                 if(err.name == 'TokenExpiredError') {
-                    res.status(404).redirect('http://localhost:3001/signup?expired=true')
+                    res.status(401).redirect('http://localhost:3001/signup?expired=true')
                 } else {
-                    res.status(403).json({
+                    res.status(401).json({
                         message: 'Error verifying your account.'
                     })
                 }
             }
 
-            if(decoded.user) {
-                const user: User = await User.query().findById(decoded.user).patch({ email_confirmed: true })
-                res.status(200).redirect('http://localhost:3001/login?confirmed=true');
-            }
+            const user: User = await User.query().findById(decoded.user).patch({ email_confirmed: true })
+            res.status(200).redirect('http://localhost:3001/login?confirmed=true');
         });
     } catch(err) {
         console.log(err)
@@ -79,7 +76,8 @@ UsersRouter.get('/email/confirm/:token', (req, res) => {
     }
 })
 
-UsersRouter.get('/email/unique/:email', async (req, res) => {
+//Route for checking if user email is unique
+UsersRouter.get('/email/unique/:email', async (req: Request, res: Response) => {
     try {
 
         if(req.params.email) {
@@ -100,17 +98,53 @@ UsersRouter.get('/email/unique/:email', async (req, res) => {
     }
 })
 
-UsersRouter.post('/login', passport.authenticate('local', { session: false }), (req: any, res: any) => {
+//Login route
+UsersRouter.post('/login', passport.authenticate('local', { session: false }), (req: any, res: Response) => {
 
-    const access_token: string =  jwt.sign({ user: req.user.id }, ls, {
-        expiresIn: "1d"
-    })
+    const accessToken: string =  createAccessToken(req.user.id)
 
-    const refresh_token: string =  jwt.sign({ user: req.user.id }, rs, {
-        expiresIn: "7d"
-    })
+    const refreshToken: string =  createRefreshToken(req.user.id)
 
-    res.cookie('smooth', refresh_token, { maxAge: 60 * 60 * 24 * 7, httpOnly: true }).send(access_token)
+    res.cookie('smooth', refreshToken, { maxAge: 60 * 60 * 24 * 7, httpOnly: true }).send(accessToken)
+})
+
+//Route for refreshing bearer token
+UsersRouter.post('/auth/refresh', async (req: any, res: Response) => {
+    const refreshToken: string = req.cookies.smooth
+
+    if(!refreshToken) {
+        res.sendStatus(401)
+    }
+
+    try {
+        jwt.verify(refreshToken, process.env.REFRESH_SECRET!, async (err: any, decoded: any) => {
+            if(err) {
+                if(err.name == 'TokenExpiredError') {
+                    res.status(401).redirect('http://localhost:3001/')
+                } else {
+                    console.log(err)
+                    res.status(401).json({
+                        message: 'Error verifying your account.'
+                    }).redirect('http://localhost:3001/login')
+                }
+            }
+
+            const user: User = await User.query().findById(decoded.user)
+
+            if(user) {
+                const accessToken: string =  jwt.sign({ user: user.id }, process.env.LOGIN_SECRET!, {
+                    expiresIn: "1d"
+                })
+                res.status(200).send(accessToken)
+            } else {
+                res.sendStatus(404)
+            }
+        })
+
+    } catch(err) {
+        console.log(err)
+        res.sendStatus(401)
+    }
 })
 
 module.exports = UsersRouter
