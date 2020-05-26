@@ -42,10 +42,14 @@ UsersRouter.post('/signup/', async (req: Request, res: Response) => {
     } catch(err) {
         if(err instanceof UniqueViolationError) {
             res.status(500).json({
+                status: 500,
                 message: err.constraint
             })
         } else {
-            res.status(500)
+            res.status(500).json({
+                status: 500,
+                message: 'Internal server error occured. Please, try again later.'
+            })
         }
     }
 })
@@ -56,9 +60,10 @@ UsersRouter.get('/email/confirm/:token', (req: Request, res: Response) => {
         jwt.verify(req.params.token, process.env.EMAIL_SECRET!, async (err: any, decoded: any) => {
             if(err) {
                 if(err.name == 'TokenExpiredError') {
-                    res.status(401).redirect('http://localhost:3001/signup?expired=true')
+                    res.status(403).redirect('http://localhost:3001/signup?expired=true')
                 } else {
                     res.status(401).json({
+                        status: 401,
                         message: 'Error verifying your account.'
                     })
                 }
@@ -69,7 +74,10 @@ UsersRouter.get('/email/confirm/:token', (req: Request, res: Response) => {
         });
     } catch(err) {
         console.log(err)
-        res.status(403).send('Error occured while confirming your e-mail address.')
+        res.status(500).json({
+            status: 500,
+            message: 'Internal server error occured. Please, try again later.'
+        })
     }
 })
 
@@ -91,7 +99,10 @@ UsersRouter.get('/email/unique/:email', async (req: Request, res: Response) => {
 
 
     } catch(err) {
-        res.status(500)
+        res.status(500).json({
+            status: 500,
+            message: 'Internal server error occured. Please, try again later.'
+        })
     }
 })
 
@@ -110,7 +121,10 @@ UsersRouter.post('/auth/refresh', async (req: any, res: Response) => {
     const refreshToken: string = req.cookies.smooth
 
     if(!refreshToken) {
-        res.sendStatus(401)
+        res.status(401).json({
+            status: 401,
+            message: 'Unauthorized request. Credentials missing.'
+        })
     }
 
     try {
@@ -119,9 +133,9 @@ UsersRouter.post('/auth/refresh', async (req: any, res: Response) => {
                 if(err.name == 'TokenExpiredError') {
                     res.status(401).redirect('http://localhost:3001/')
                 } else {
-                    console.log(err)
                     res.status(401).json({
-                        message: 'Error verifying your account.'
+                        status: 401,
+                        message: 'Ivalid token supplied.'
                     }).redirect('http://localhost:3001/login')
                 }
             }
@@ -134,13 +148,18 @@ UsersRouter.post('/auth/refresh', async (req: any, res: Response) => {
                 })
                 res.status(200).send(accessToken)
             } else {
-                res.sendStatus(404)
+                res.status(404).json({
+                    status: 404,
+                    message: 'User was not found.'
+                })
             }
         })
 
     } catch(err) {
-        console.log(err)
-        res.sendStatus(401)
+        res.status(500).json({
+            status: 500,
+            message: 'Internal server error occured. Please, try again later.'
+        })
     }
 })
 
