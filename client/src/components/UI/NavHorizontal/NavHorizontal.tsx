@@ -1,18 +1,12 @@
 import React from 'react'
-import { withRouter, RouteComponentProps, Link } from 'react-router-dom'
+import { withRouter, Link } from 'react-router-dom'
 
 // Component imports
 import Hamburger from '../Hamburger/Hamburger'
 import Button from '../Button/Button'
 
-interface NavItem {
-    label: string,
-    route: string
-}
-
-interface Props extends RouteComponentProps {
-    items: NavItem[]
-}
+//Types
+import { Props } from './types'
 
 const NavHorizontal: React.FC<Props> = ({ items, history }) => {
     let navItems: JSX.Element[] | null = []

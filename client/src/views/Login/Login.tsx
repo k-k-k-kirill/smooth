@@ -18,13 +18,7 @@ import actions from '../../store/actions/actions'
 
 //Types
 import { ApplicationState } from '../../index'
-
-interface SubmissionValues {
-    email?: string,
-    password?: string,
-}
-
-interface SubmissionErrors extends SubmissionValues {}
+import { SubmissionValues, SubmissionErrors } from './types'
 
 const validate = (values: SubmissionValues) => {
     const errors: SubmissionErrors = {}

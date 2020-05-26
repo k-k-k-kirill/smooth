@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
 //Actions
@@ -14,14 +14,13 @@ import Login from './views/Login/Login'
 import Signup from './views/Signup/Signup'
 import Upcoming from './views/Upcoming/Upcoming'
 import NotFound from './views/404/404'
-import { ApplicationState } from '.';
 
 function App() {
   const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch({ type: actions.auth.TOKEN_REFRESH_REQUEST })
-  }, [])
+  }, [dispatch])
 
   return (
     <div className="App">

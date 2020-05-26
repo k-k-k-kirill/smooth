@@ -1,16 +1,7 @@
-import React, { ChangeEvent } from 'react'
+import React from 'react'
 
-interface Props {
-    id?: string,
-    label?: string,
-    name: string,
-    value?: string,
-    placeholder: string,
-    change: (eventOrPath: string | ChangeEvent<any>) => void,
-    blur?: (eventOrPath: string | ChangeEvent<any>) => void,
-    classes?: string,
-    type?: string
-}
+//Types
+import { Props } from './types'
 
 const TextField: React.FC<Props> = ({ id, label, name, value, placeholder, change, classes, blur, type }) => {
     return (

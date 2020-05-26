@@ -18,17 +18,13 @@ import isEmailUnique from '../../services/isEmailUnique'
 //Utils and custom hooks
 import useParser from '../../utils/queryParser'
 
-interface FormErrors {
-    firstName?: string,
-    lastName?: string,
-    email?: string,
-    password?: string,
-    confirm_password?: string
-}
+//Types
+import { SubmissionValues, SubmissionErrors } from './types'
 
 //Validator for sign up form
-const validate = async (values: any) => {
-    const errors: FormErrors = {}
+const validate = async (values: SubmissionValues) => {
+    const errors: SubmissionErrors = {}
+
     if (!values.firstName) {
       errors.firstName = 'This field is required';
     } else if (values.firstName.length > 15) {
@@ -55,7 +51,7 @@ const validate = async (values: any) => {
         errors.confirm_password = 'Passwords don\'t match.'
     } 
     
-    if (!values.password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/)) {
+    if (values.password && !values.password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/)) {
         errors.password = 'Your password must be between 8 to 15 characters long, contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character.'
     }
 
@@ -67,9 +63,9 @@ const validate = async (values: any) => {
 }
 
 const Signup: React.FC = () => {
-    const [ submissionSuccess, setSubmissionSuccess ] = useState(false)
-    const [ submitted, setSubmitted ] = useState(false)
-    const [ loading, setLoading ] = useState(false)
+    const [ submissionSuccess, setSubmissionSuccess ] = useState<boolean>(false)
+    const [ submitted, setSubmitted ] = useState<boolean>(false)
+    const [ loading, setLoading ] = useState<boolean>(false)
 
     //Use formik hook to create <Formik> component.
     const formik = useFormik({

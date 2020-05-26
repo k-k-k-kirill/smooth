@@ -1,13 +1,7 @@
 import React from 'react'
 
-interface Props {
-    label: string,
-    purple?: boolean,
-    fluid?: boolean,
-    clicked?: () => void,
-    classes?: string
-    type?: "button" | "submit" | "reset" | undefined
-}
+//Types
+import { Props } from './types'
 
 const Button: React.FC<Props> = ({ label, clicked, purple, classes, type, fluid }) => {
     return(
