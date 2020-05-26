@@ -14,9 +14,6 @@ import createAccessToken from '../utils/createAccessToken'
 import createRefreshToken from '../utils/createRefreshToken'
 import createEmailToken from '../utils/createEmailToken'
 
-//Environment variables
-const ls: string = process.env.LOGIN_SECRET!
-
 //New user registration route
 UsersRouter.post('/signup/', async (req: Request, res: Response) => {
     try {

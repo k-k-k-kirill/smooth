@@ -11,12 +11,34 @@ import TextField from '../../components/UI/Form/TextField/TextField'
 import Button from '../../components/UI/Button/Button'
 import Loader from '../../components/UI/Loader/Loader'
 import LayoutVertical from '../../components/Layouts/LayoutVertical/LayoutVertical'
+import InputError from '../../components/UI/Form/InputError/InputError'
 
 //Actions
 import actions from '../../store/actions/actions'
 
 //Types
 import { ApplicationState } from '../../index'
+
+interface SubmissionValues {
+    email?: string,
+    password?: string,
+}
+
+interface SubmissionErrors extends SubmissionValues {}
+
+const validate = (values: SubmissionValues) => {
+    const errors: SubmissionErrors = {}
+
+    if(values.email === '') {
+        errors.email = 'Please, enter your email to log in.'
+    }
+
+    if(values.password === '') {
+        errors.password = 'Please, provide your password to log in.'
+    }
+
+    return errors
+}
 
 interface Props extends RouteComponentProps {}
 
@@ -37,10 +59,13 @@ const Login: React.FC<Props> = ({ history, location }) => {
             email: '',
             password: ''
         },
+        validate,
         validateOnChange: false,
         validateOnBlur: false,
         onSubmit: async values => {
-            dispatch({ type: actions.auth.LOGIN_REQUEST, values })
+            if(values) {
+                dispatch({ type: actions.auth.LOGIN_REQUEST, values })
+            }
         }
     })
 
@@ -57,10 +82,12 @@ const Login: React.FC<Props> = ({ history, location }) => {
                         { error ? <p className="mb-4 text-center">{error}</p> : null }
 
                         <form onSubmit={formik.handleSubmit}>
-
+                            {formik.errors.email ? <InputError>{formik.errors.email}</InputError> : null}
                             <TextField classes="mb-4" type="email" placeholder="Email" value={formik.values.email} name="email" id="email" change={formik.handleChange} />
 
+                            {formik.errors.password ? <InputError>{formik.errors.password}</InputError> : null}
                             <TextField classes="mb-4" type="password" placeholder="Password" value={formik.values.password} name="password" id="password" change={formik.handleChange} />
+
                             <div className="d-flex flex-row justify-content-between button-group">
                                 <Button type="submit" label="Log in" />
                                 <Button label="Sign Up" purple clicked={() => history.push('/signup')} />

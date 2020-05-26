@@ -48,5 +48,4 @@ passport.use(new JwtStrategy(JWT_options, async (decoded: any, done: any) => {
 }))
 
 
-
 module.exports = passport

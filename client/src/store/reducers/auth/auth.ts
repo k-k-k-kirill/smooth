@@ -16,6 +16,7 @@ const authReducer = (state: authState = {
                 password: action.values.password
             }
             return state
+
         case actions.auth.LOGIN_SUCCESS:
             state = {
                 ...state,
@@ -23,8 +24,24 @@ const authReducer = (state: authState = {
                 authenticated: true
             }
             return state
+
         case actions.auth.LOGIN_FAILED:
             return state
+
+        case actions.auth.TOKEN_REFRESH_REQUEST:
+            return state
+
+        case actions.auth.TOKEN_REFRESH_SUCCESS:
+            state = {
+                ...state,
+                token: action.token,
+                authenticated: true
+            }
+            return state
+
+        case actions.auth.TOKEN_REFRESH_FAILED:
+            return state
+
         default:
             return state
     }
