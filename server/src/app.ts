@@ -7,6 +7,8 @@ const bodyParser    = require('body-parser')
 const cors = require('cors')
 const passport = require('./middleware/auth/passport')
 const cookieParser = require('cookie-parser')
+const morgan = require('morgan')
+const logger = require('./logger')
 
 //Initialise Objection
 Model.knex(knex)
@@ -21,6 +23,9 @@ const routes = require('./routes/index')
 const SERVER_PORT: string | number = process.env.SERVER_PORT || 5000
 
 const app: Application = express()
+
+//Morgan logging
+app.use(morgan('combined', { stream: logger.stream }))
 
 // BodyParser
 app.use(bodyParser.json())

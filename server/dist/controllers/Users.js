@@ -11,13 +11,11 @@ const { UniqueViolationError } = require('objection-db-errors');
 const passport = require('../middleware/auth/passport');
 //Dotenv configuration
 require('dotenv').config();
-//Environment variables
-const es = process.env.ES;
-const ls = process.env.LOGIN_SECRET;
-const rs = process.env.REFRESH_SECRET;
-UsersRouter.get('/', (req, res) => {
-    res.send('Router works!');
-});
+//Utils
+const createAccessToken_1 = __importDefault(require("../utils/createAccessToken"));
+const createRefreshToken_1 = __importDefault(require("../utils/createRefreshToken"));
+const createEmailToken_1 = __importDefault(require("../utils/createEmailToken"));
+//New user registration route
 UsersRouter.post('/signup/', async (req, res) => {
     try {
         const user = await User_1.default.query().insert({
@@ -26,9 +24,7 @@ UsersRouter.post('/signup/', async (req, res) => {
             last_name: req.body.lastName,
             email: req.body.email
         });
-        const token = jsonwebtoken_1.default.sign({ user: user.id }, es, {
-            expiresIn: "1h"
-        });
+        const token = createEmailToken_1.default(user.id);
         const message = {
             from: 'vitchenko.kirill@gmail.com',
             to: user.email,
@@ -44,38 +40,46 @@ UsersRouter.post('/signup/', async (req, res) => {
     catch (err) {
         if (err instanceof UniqueViolationError) {
             res.status(500).json({
+                status: 500,
                 message: err.constraint
             });
         }
         else {
-            res.status(500);
+            res.status(500).json({
+                status: 500,
+                message: 'Internal server error occured. Please, try again later.'
+            });
         }
     }
 });
+//Email confirmation route
 UsersRouter.get('/email/confirm/:token', (req, res) => {
     try {
-        jsonwebtoken_1.default.verify(req.params.token, es, async (err, decoded) => {
+        jsonwebtoken_1.default.verify(req.params.token, process.env.EMAIL_SECRET, async (err, decoded) => {
             if (err) {
                 if (err.name == 'TokenExpiredError') {
-                    res.status(404).redirect('http://localhost:3001/signup?expired=true');
+                    res.status(403).redirect('http://localhost:3001/signup?expired=true');
                 }
                 else {
-                    res.status(403).json({
+                    res.status(401).json({
+                        status: 401,
                         message: 'Error verifying your account.'
                     });
                 }
             }
-            if (decoded.user) {
-                const user = await User_1.default.query().findById(decoded.user).patch({ email_confirmed: true });
-                res.status(200).redirect('http://localhost:3001/login?confirmed=true');
-            }
+            const user = await User_1.default.query().findById(decoded.user).patch({ email_confirmed: true });
+            res.status(200).redirect('http://localhost:3001/login?confirmed=true');
         });
     }
     catch (err) {
         console.log(err);
-        res.status(403).send('Error occured while confirming your e-mail address.');
+        res.status(500).json({
+            status: 500,
+            message: 'Internal server error occured. Please, try again later.'
+        });
     }
 });
+//Route for checking if user email is unique
 UsersRouter.get('/email/unique/:email', async (req, res) => {
     try {
         if (req.params.email) {
@@ -92,16 +96,60 @@ UsersRouter.get('/email/unique/:email', async (req, res) => {
         }
     }
     catch (err) {
-        res.status(500);
+        res.status(500).json({
+            status: 500,
+            message: 'Internal server error occured. Please, try again later.'
+        });
     }
 });
+//Login route
 UsersRouter.post('/login', passport.authenticate('local', { session: false }), (req, res) => {
-    const access_token = jsonwebtoken_1.default.sign({ user: req.user.id }, ls, {
-        expiresIn: "1d"
-    });
-    const refresh_token = jsonwebtoken_1.default.sign({ user: req.user.id }, rs, {
-        expiresIn: "7d"
-    });
-    res.cookie('smooth', refresh_token, { maxAge: 60 * 60 * 24 * 7, httpOnly: true }).send(access_token);
+    const accessToken = createAccessToken_1.default(req.user.id);
+    const refreshToken = createRefreshToken_1.default(req.user.id);
+    res.cookie('smooth', refreshToken, { maxAge: 60 * 60 * 24 * 7, httpOnly: true }).send(accessToken);
+});
+//Route for refreshing bearer token
+UsersRouter.post('/auth/refresh', async (req, res) => {
+    const refreshToken = req.cookies.smooth;
+    if (!refreshToken) {
+        res.status(401).json({
+            status: 401,
+            message: 'Unauthorized request. Credentials missing.'
+        });
+    }
+    try {
+        jsonwebtoken_1.default.verify(refreshToken, process.env.REFRESH_SECRET, async (err, decoded) => {
+            if (err) {
+                if (err.name == 'TokenExpiredError') {
+                    res.status(401).redirect('http://localhost:3001/');
+                }
+                else {
+                    res.status(401).json({
+                        status: 401,
+                        message: 'Ivalid token supplied.'
+                    }).redirect('http://localhost:3001/login');
+                }
+            }
+            const user = await User_1.default.query().findById(decoded.user);
+            if (user) {
+                const accessToken = jsonwebtoken_1.default.sign({ user: user.id }, process.env.LOGIN_SECRET, {
+                    expiresIn: "1d"
+                });
+                res.status(200).send(accessToken);
+            }
+            else {
+                res.status(404).json({
+                    status: 404,
+                    message: 'User was not found.'
+                });
+            }
+        });
+    }
+    catch (err) {
+        res.status(500).json({
+            status: 500,
+            message: 'Internal server error occured. Please, try again later.'
+        });
+    }
 });
 module.exports = UsersRouter;

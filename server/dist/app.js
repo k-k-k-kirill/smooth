@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const passport = require('./middleware/auth/passport');
 const cookieParser = require('cookie-parser');
+const morgan = require('morgan');
 //Initialise Objection
 objection_1.Model.knex(knex);
 //Dotenv configuration
@@ -16,6 +17,8 @@ const routes = require('./routes/index');
 //Constants
 const SERVER_PORT = process.env.SERVER_PORT || 5000;
 const app = express();
+//Morgan logging
+app.use(morgan('combined'));
 // BodyParser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
