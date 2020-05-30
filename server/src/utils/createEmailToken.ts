@@ -1,11 +1,11 @@
-import jwt from 'jsonwebtoken'
+import jwt from "jsonwebtoken";
 
 const createEmailToken = (user_id: number) => {
-    const token = jwt.sign({ user: user_id }, process.env.REFRESH_SECRET!, {
-        expiresIn: "1h"
-    })
+  const token = jwt.sign({ user: user_id }, process.env.REFRESH_SECRET!, {
+    expiresIn: "1h",
+  });
 
-    return token
-}
+  return token;
+};
 
-export default createEmailToken
+export default createEmailToken;

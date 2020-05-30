@@ -1,5 +1,5 @@
-const sgMail = require('@sendgrid/mail')
+const sgMail = require("@sendgrid/mail");
 
-sgMail.setApiKey(process.env.SG_KEY)
+sgMail.setApiKey(process.env.SG_KEY);
 
-module.exports = sgMail
+module.exports = sgMail;
