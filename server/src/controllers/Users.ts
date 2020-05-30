@@ -124,7 +124,7 @@ UsersRouter.post(
 
     res
       .cookie("smooth", refreshToken, {
-        maxAge: 60 * 60 * 24 * 7,
+        maxAge: 60 * 60 * 24 * 7 * 1000,
         httpOnly: true,
       })
       .send(accessToken);
