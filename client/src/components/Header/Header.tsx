@@ -1,10 +1,10 @@
 import React from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
-import { ReactComponent as Logo } from "../../assets/images/smooth_logo.svg";
 
 // Component imports
 import Button from "../UI/Button/Button";
 import NavHorizontal from "../UI/NavHorizontal/NavHorizontal";
+import Brand from "../Brand/Brand"
 
 interface Props extends RouteComponentProps {}
 
@@ -27,13 +27,7 @@ const Header: React.FC<Props> = ({ history }) => {
   return (
     <>
       <header className="app-header">
-        <div className="app-logo">
-          <Logo
-            onClick={() => {
-              history.push("/");
-            }}
-          />
-        </div>
+        <Brand />
         <div className="top-nav">
           <NavHorizontal items={navItems} />
           <Button

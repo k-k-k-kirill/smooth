@@ -1,40 +1,42 @@
 //Fonts
-@import './common/fonts';
+@import "./common/fonts";
 
 //Variables
-@import './common/variables';
+@import "./common/variables";
 
 // Import Bootstrap and its default variables
-@import '~bootstrap/scss/bootstrap.scss';
+@import "~bootstrap/scss/bootstrap.scss";
 
 //Hamburgers
-@import '~hamburgers/_sass/hamburgers/hamburgers';
+@import "~hamburgers/_sass/hamburgers/hamburgers";
 
 // Global styles
-@import './common/global';
+@import "./common/global";
 
 //Mixins
-@import './mixins/fluid-type';
+@import "./mixins/fluid-type";
 
 //Typography
-@import './common/typography';
+@import "./common/typography";
 
 //Buttons
-@import './common/buttons';
+@import "./common/buttons";
 
 //Links
-@import './common/links';
+@import "./common/links";
 
 //Components
-@import '../../components/Header/Header';
-@import '../../components/ColumnedContent/ColumnedContent';
-@import '../../components/UI/Hamburger/Hamburger';
-@import '../../components/UI/NavHorizontal/NavHorizontal';
-@import '../../components/UI/Form/TextField/TextField';
-@import '../../components/UI/Form/InputError/InputError';
-@import '../../components/UI/Loader/Loader';
+@import "../../components/Header/Header";
+@import "../../components/ColumnedContent/ColumnedContent";
+@import "../../components/UI/Hamburger/Hamburger";
+@import "../../components/UI/NavHorizontal/NavHorizontal";
+@import "../../components/UI/Form/TextField/TextField";
+@import "../../components/UI/Form/InputError/InputError";
+@import "../../components/UI/Loader/Loader";
+@import "../../components/Layouts/LayoutHorizontal/LayoutHorizontal";
+@import "../../components/SideMenu/SideMenu";
 
 //Views
-@import '../../views/Home/Home';
-@import '../../views/Login/Login';
-@import '../../views/404/404';
+@import "../../views/Home/Home";
+@import "../../views/Login/Login";
+@import "../../views/404/404";
