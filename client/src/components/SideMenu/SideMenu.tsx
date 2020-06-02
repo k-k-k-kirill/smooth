@@ -3,7 +3,10 @@ import React from "react";
 //Components
 import Brand from "../Brand/Brand";
 import MenuItem from "../MenuItem/MenuItem";
-import { ReactComponent as UpcomingIcon } from "../../assets/images/view_agenda.svg";
+import { ReactComponent as UpcomingIcon } from "../../assets/images/home.svg";
+import { ReactComponent as ProjectsIcon } from "../../assets/images/work_outline.svg";
+import { ReactComponent as TemplatesIcon } from "../../assets/images/web.svg";
+import { ReactComponent as TimeTrackingIcon } from "../../assets/images/schedule.svg";
 
 const SideMenu: React.FC = () => {
   const menuItems = [
@@ -15,17 +18,17 @@ const SideMenu: React.FC = () => {
     {
       label: "Projects",
       route: "/projects",
-      icon: <UpcomingIcon />,
+      icon: <ProjectsIcon />,
     },
     {
       label: "Templates",
       route: "/templates",
-      icon: <UpcomingIcon />,
+      icon: <TemplatesIcon />,
     },
     {
       label: "Time tracking",
       route: "/time",
-      icon: <UpcomingIcon />,
+      icon: <TimeTrackingIcon />,
     },
   ];
 
