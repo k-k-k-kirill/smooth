@@ -1,68 +1,68 @@
 .side-menu {
-    &__container {
-        background-color: $dark-blue;
-        height: 100%;
+  &__container {
+    background-color: $dark-blue;
+    height: 100%;
+  }
+
+  &__brand {
+    display: none;
+
+    @include media-breakpoint-up(lg) {
+      display: block;
     }
 
-    &__brand {
-        display: none;
+    padding: 1rem 1.5rem;
+  }
 
-        @include media-breakpoint-up(lg) {
-            display: block;
-        }
+  &__list {
+    padding: 0;
 
-        padding: 1rem 1.5rem;
+    @include media-breakpoint-up(lg) {
+      margin-top: 6rem;
+    }
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: $white;
+    font-size: 1.125rem;
+    font-weight: bold;
+    list-style-type: none;
+    transition: all 0.1s ease-in;
+    padding: 1rem 1rem;
+
+    @include media-breakpoint-up(lg) {
+      padding: 0.75rem 1.5rem;
     }
 
-    &__list {
-        padding: 0;
-
-        @include media-breakpoint-up(lg) {
-            margin-top: 6rem;
-        }
+    &:hover,
+    &.active {
+      background-color: $purple-light;
+      cursor: pointer;
     }
 
-    &__item {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        color: $white;
-        font-size: 1.125rem;
-        font-weight: bold;
-        list-style-type: none;
-        transition: all 0.1s ease-in;
-        padding: 1rem 1rem;
+    &__icon {
+      display: inline-block;
 
-        @include media-breakpoint-up(lg) {
-            padding: 0.75rem 1.5rem;
-        }
+      @include media-breakpoint-up(lg) {
+        margin-right: 0.5rem;
+      }
 
-        &:hover,
-        &.active {
-            background-color: $purple-light;
-            cursor: pointer;
-        }
-
-        &__icon {
-            display: inline-block;
-
-            @include media-breakpoint-up(lg) {
-                margin-right: 0.5rem;
-            }
-
-            svg {
-                display: block;
-                fill: $white;
-            }
-        }
-
-        &__label {
-            display: none;
-
-            @include media-breakpoint-up(lg) {
-                display: block;
-                margin-top: 2px;
-            }
-        }
+      svg {
+        display: block;
+        fill: $white;
+      }
     }
+
+    &__label {
+      display: none;
+
+      @include media-breakpoint-up(lg) {
+        display: block;
+        margin-top: 2px;
+      }
+    }
+  }
 }

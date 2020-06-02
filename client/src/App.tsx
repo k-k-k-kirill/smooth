@@ -13,6 +13,9 @@ import Home from "./views/Home/Home";
 import Login from "./views/Login/Login";
 import Signup from "./views/Signup/Signup";
 import Upcoming from "./views/Upcoming/Upcoming";
+import Projects from "./views/Projects/Projects";
+import Templates from "./views/Templates/Templates";
+import TimeTracking from "./views/TimeTracking/TimeTracking";
 import NotFound from "./views/404/404";
 
 function App() {
@@ -30,6 +33,9 @@ function App() {
           <Route path="/login" component={Login} />
           <Route path="/signup" component={Signup} />
           <PrivateRoute path="/upcoming" component={Upcoming} />
+          <PrivateRoute path="/projects" component={Projects} />
+          <PrivateRoute path="/templates" component={Templates} />
+          <PrivateRoute path="/time" component={TimeTracking} />
           <Route component={NotFound} />
         </Switch>
       </Router>

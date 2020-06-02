@@ -12,6 +12,21 @@ const SideMenu: React.FC = () => {
       route: "/upcoming",
       icon: <UpcomingIcon />,
     },
+    {
+      label: "Projects",
+      route: "/projects",
+      icon: <UpcomingIcon />,
+    },
+    {
+      label: "Templates",
+      route: "/templates",
+      icon: <UpcomingIcon />,
+    },
+    {
+      label: "Time tracking",
+      route: "/time",
+      icon: <UpcomingIcon />,
+    },
   ];
 
   const menuItemComponents = menuItems.map((item) => {
