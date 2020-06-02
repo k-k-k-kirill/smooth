@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useFormik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
@@ -37,15 +37,18 @@ const validate = (values: SubmissionValues) => {
 interface Props extends RouteComponentProps {}
 
 const Login: React.FC<Props> = ({ history, location }) => {
+
+    useEffect(() => {
+        if(authenticated) {
+            history.push('/upcoming')
+        }    
+    })
+
     const dispatch = useDispatch()
 
     const loading = useSelector((state: ApplicationState) => state.ui.loading)
     const authenticated = useSelector((state: ApplicationState) => state.auth.authenticated)
     const error = useSelector((state: ApplicationState) => state.error.message)
-
-    if(authenticated) {
-        history.push('/upcoming')
-    }
 
     //Use formik hook to create <Formik> component.
     const formik = useFormik({

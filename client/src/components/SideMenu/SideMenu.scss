@@ -5,6 +5,12 @@
     }
 
     &__brand {
+        display: none;
+
+        @include media-breakpoint-up(lg) {
+            display: block;
+        }
+
         padding: 1rem 1.5rem;
     }
 
@@ -24,8 +30,12 @@
         font-size: 1.125rem;
         font-weight: bold;
         list-style-type: none;
-        padding: 0.75rem 1.5rem;
         transition: all 0.1s ease-in;
+        padding: 1rem 1rem;
+
+        @include media-breakpoint-up(lg) {
+            padding: 0.75rem 1.5rem;
+        }
 
         &:hover,
         &.active {
@@ -35,8 +45,11 @@
 
         &__icon {
             display: inline-block;
-            margin-right: 0.5rem;
-            
+
+            @include media-breakpoint-up(lg) {
+                margin-right: 0.5rem;
+            }
+
             svg {
                 display: block;
                 fill: $white;
@@ -44,7 +57,12 @@
         }
 
         &__label {
-            margin-top: 2px;
+            display: none;
+
+            @include media-breakpoint-up(lg) {
+                display: block;
+                margin-top: 2px;
+            }
         }
     }
 }
